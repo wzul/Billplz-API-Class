@@ -115,8 +115,6 @@ class billplzCURL {
         }
     }
 
-//------------------------------------------------------------------------//
-// Indirect Use
     public function checkMobileNumber($mobile) {
         $mobile = preg_replace("/[^0-9]/", "", $mobile);
         $custTel = $mobile;
@@ -135,8 +133,6 @@ class billplzCURL {
         } return $custTel;
     }
 
-//------------------------------------------------------------------------//
-// Direct Use
     public function setCollection($collection_id) {
         $this->array['collection_id'] = $collection_id;
         return $this;
@@ -187,7 +183,7 @@ class billplzCURL {
         return $this;
     }
 
-    public function setPassbackURL($redirect_url, $callback_url) {
+    public function setPassbackURL($callback_url, $redirect_url = '') {
         $this->array['redirect_url'] = $redirect_url;
         $this->array['callback_url'] = $callback_url;
         return $this;
@@ -198,13 +194,13 @@ class billplzCURL {
         return $this;
     }
 
-    public function create_collection($api_key, $mode = '') {
+    public function create_collection($api_key, $title = 'Payment For Purchase', $mode = '') {
         $this->obj->setAPI($api_key);
         $this->obj->setAction('COLLECTIONS');
 
         $this->obj->setURL($mode);
         $data = [
-            'title' => 'Payment For Purchase'
+            'title' => $title
         ];
         $collection = $this->obj->curl_action($data);
         return $collection['id'];
