@@ -26,4 +26,4 @@ Billplz API v3 using cURL
 
 # Example
 
-Please refer to specific file for example how to use the class
+Please refer to specific file for example how to use the class. Any contribution are welcomed!
