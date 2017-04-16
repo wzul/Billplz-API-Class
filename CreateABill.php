@@ -11,7 +11,7 @@ $a = new BillplzCURL;
 $a->setName("Wan Zulkarnain");
 $a->setAmount('10.60');
 $a->setEmail('wan@wanzul-hosting.com');
-$a->setDescription("sss");
+$a->setDescription("Test");
 $a->setPassbackURL('http://callback-url.com', 'http://redirect-url.com');
 //$a->setCollection('ypppifx4m');
 //$a->setPassbackURL('http://callback-url.com');
