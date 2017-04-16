@@ -1,6 +1,6 @@
 <?php
 
-class billplzCURL {
+class BillplzCURL {
 
     public static $version = 3.00;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
