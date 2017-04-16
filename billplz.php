@@ -178,6 +178,11 @@ class BillplzCURL {
         return $this;
     }
 
+    public function setReference_2($reference_1) {
+        $this->array['reference_2'] = substr($reference_1, 0, 119);
+        return $this;
+    }
+
     public function setDescription($description) {
         $this->array['description'] = substr($description, 0, 199);
         return $this;
@@ -191,6 +196,11 @@ class BillplzCURL {
 
     public function setReference_1_Label($label) {
         $this->array['reference_1_label'] = substr($label, 0, 19);
+        return $this;
+    }
+
+    public function setReference_2_Label($label) {
+        $this->array['reference_2_label'] = substr($label, 0, 19);
         return $this;
     }
 
