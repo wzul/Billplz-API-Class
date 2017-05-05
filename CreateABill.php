@@ -1,13 +1,14 @@
 <?php
 
 /*
+ * This file shows how to Create A Bill using BillplzCURL class
  * The commented line is Optional parameter
  * 
  */
 require 'billplz.php';
 $api_key = '4e49de80-1670-4606-84f8-2f1d33a38670';
 
-$a = new BillplzCURL;
+$a = new Billplz;
 
 /*
  * Create Collection
