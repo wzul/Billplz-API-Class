@@ -35,7 +35,7 @@ class BillplzCURL {
 
     public static function getRedirectData($signkey) {
         $data = [
-            'id' => $_GET['billplz']['id'],
+            'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : exit('Billplz ID is not supplied'),
             'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : exit('Please enable Billplz XSignature Payment Completion'),
             'paid' => isset($_GET['billplz']['paid']) ? $_GET['billplz']['paid'] : exit('Please enable Billplz XSignature Payment Completion'),
             'x_signature' => isset($_GET['billplz']['x_signature']) ? $_GET['billplz']['x_signature'] : exit('Please enable Billplz XSignature Payment Completion'),
@@ -50,6 +50,12 @@ class BillplzCURL {
             }
         }
         $generatedSHA = hash_hmac('sha256', $preparedString, $signkey);
+
+        /*
+         * Convert paid status to boolean
+         */
+        $data['paid'] = $data['paid'] === 'true' ? true : false;
+
         if ($data['x_signature'] === $generatedSHA) {
             return $data;
         } else {
@@ -59,19 +65,19 @@ class BillplzCURL {
 
     public static function getCallbackData($signkey) {
         $data = [
-            'amount' => $_POST['amount'],
-            'collection_id' => $_POST['collection_id'],
-            'due_at' => $_POST['due_at'],
-            'email' => $_POST['email'],
-            'id' => $_POST['id'],
-            'mobile' => $_POST['mobile'],
-            'name' => $_POST['name'],
-            'paid_amount' => $_POST['paid_amount'],
-            'paid_at' => $_POST['paid_at'],
-            'paid' => $_POST['paid'],
-            'state' => $_POST['state'],
-            'url' => $_POST['url'],
-            'x_signature' => $_POST['x_signature'],
+            'amount' => isset($_POST['amount']) ? $_POST['amount'] : exit('Amount is not supplied'),
+            'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : exit('Collection ID is not supplied'),
+            'due_at' => isset($_POST['due_at']) ? $_POST['due_at'] : '',
+            'email' => isset($_POST['email']) ? $_POST['email'] : '',
+            'id' => isset($_POST['id']) ? $_POST['id'] : exit('Billplz ID is not supplied'),
+            'mobile' => isset($_POST['mobile']) ? $_POST['mobile'] : '',
+            'name' => isset($_POST['name']) ? $_POST['name'] : exit('Payer Name is not supplied'),
+            'paid_amount' => isset($_POST['paid_amount']) ? $_POST['paid_amount'] : '',
+            'paid_at' => isset($_POST['paid_at']) ? $_POST['paid_at'] : '',
+            'paid' => isset($_POST['paid']) ? $_POST['paid'] : exit('Paid status is not supplied'),
+            'state' => isset($_POST['state']) ? $_POST['state'] : exit('State is not supplied'),
+            'url' => isset($_POST['url']) ? $_POST['url'] : exit('URL is not supplied'),
+            'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] : exit('X Signature is not enabled'),
         ];
         $preparedString = '';
         foreach ($data as $key => $value) {
@@ -83,6 +89,12 @@ class BillplzCURL {
             }
         }
         $generatedSHA = hash_hmac('sha256', $preparedString, $signkey);
+
+        /*
+         * Convert paid status to boolean
+         */
+        $data['paid'] = $data['paid'] === 'true' ? true : false;
+
         if ($data['x_signature'] === $generatedSHA) {
             return $data;
         } else {
@@ -91,7 +103,8 @@ class BillplzCURL {
     }
 
     /*
-     * Deprecated. Will be removed soon
+     * Funciton: check_apikey_collectionid is
+     * deprecated. Will be removed soon
      */
 
     public function check_apikey_collectionid($api_key, $collection_id, $mode) {
@@ -116,6 +129,21 @@ class BillplzCURL {
             $this->obj->curl_action();
             return true;
         }
+    }
+
+    public function deleteBill($api_key, $bill_id, $mode = '') {
+        $this->obj->setAPI($api_key);
+        /*
+         * Identify mode if not supplied
+         */
+
+        if (empty($mode)) {
+            $mode = $this->check_api_key($api_key);
+        }
+        $this->obj->setAction('DELETE');
+        $this->obj->setURL($mode, $bill_id);
+        $data = $this->obj->curl_action();
+        return $data;
     }
 
     public function checkMobileNumber($mobile) {
