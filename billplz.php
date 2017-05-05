@@ -2,7 +2,7 @@
 
 class BillplzCURL {
 
-    public static $version = 3.00;
+    public static $version = 3.01;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
 
     public function __construct() {
@@ -12,7 +12,7 @@ class BillplzCURL {
 
     public function getCollectionIndex($api_key, $page = '1', $mode = '', $status = null) {
         $this->obj->setAPI($api_key);
-        $this->obj->setAction('GETCOLLECTIONINDEX');
+
         /*
          * Identify mode if not supplied
          */
@@ -20,6 +20,9 @@ class BillplzCURL {
         if (empty($mode)) {
             $mode = $this->check_api_key($api_key);
         }
+
+        $this->obj->setAction('GETCOLLECTIONINDEX');
+
         $this->obj->setURL($mode);
         $array = [
             'page' => $page,
@@ -279,7 +282,7 @@ class BillplzCURL {
             $collection_id = $this->create_collection($api_key);
         } else {
             for ($i = 0; $i < sizeof($data['collections']); $i++) {
-                if ($ayam['collections'][$i]['status'] == 'active') {
+                if ($data['collections'][$i]['status'] == 'active') {
                     $collection_id = $data['collections'][$i]['id'];
                     break;
                 } else {
@@ -363,7 +366,7 @@ class BillplzCURL {
         }
 
         if (isset($data['error'])) {
-            $this->errorMessage = $data['error']['type'] . ' ' . $data['error']['message'];
+            $this->errorMessage = $data['error']['type'] . ' ' . print_r($data['error']['message'], true);
             return false;
         }
         $this->url = $data['url'];
@@ -389,7 +392,6 @@ class BillplzCURL {
 
     public function check_bill($api_key, $bill_id, $mode = '') {
         $this->obj->setAPI($api_key);
-        $this->obj->setAction('CHECK');
         /*
          * Identify mode if not supplied
          */
@@ -397,6 +399,7 @@ class BillplzCURL {
         if (empty($mode)) {
             $mode = $this->check_api_key($api_key);
         }
+        $this->obj->setAction('CHECK');
         $this->obj->setURL($mode, $bill_id);
         $data = $this->obj->curl_action();
         return $data;
@@ -441,6 +444,7 @@ class Billplzcurlaction {
     public function curl_action($data = '') {
         $process = curl_init();
         if ($this->action == 'GETCOLLECTIONINDEX') {
+            //echo '<pre>'.print_r($data, true).'</pre>';
             $this->url .= '?page=' . $data['page'] . '&status=' . $data['status'];
         } else if ($this->action == 'CHECKCOLLECTION') {
             $this->url .= $data['id'];
