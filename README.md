@@ -20,7 +20,7 @@ Billplz API v3 using cURL
 - Create A Collection
 - Create A Bill
 - Get A Bill
-- Delete A Bill (NOT READY YET)
+- Delete A Bill
 - Check Collection ID Availability
 - Get Collection Index
 
