@@ -1,8 +1,8 @@
 # Billplz API Class
 Billplz API v3 using cURL
 
-# Latest Version: 3.00
-# Last Update: 16 April 2017
+# Latest Version: 3.01
+# Last Update: 5 May 2017
 
 # Features
 
