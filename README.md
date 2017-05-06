@@ -4,6 +4,9 @@ Billplz API v3 using cURL
 # Latest Version: 3.01
 # Last Update: 5 May 2017
 
+# Minimum System Requirement
+- PHP 5.5 or newer 
+
 # Features
 
 - Automatically detect mode (Production/Staging) based on API Key
@@ -13,7 +16,7 @@ Billplz API v3 using cURL
 - Option to send Email Notification only or SMS Notification only
 - Automatic fallback to no notification if Mobile Number is invalid or vice versa
 - X Signature (HMAC SHA256 Validation) for Redirect and Callback ready
-- 
+- Linux & Windows Server Compatible
 
 # API Access Ability
 
