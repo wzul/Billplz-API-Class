@@ -3,6 +3,7 @@
 require 'vendor/autoload.php';
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class Billplz {
 
@@ -531,7 +532,7 @@ class BillplzAction {
         }
         try {
             $response = $client->request($reqType, $this->url, $preparedHeader);
-        } catch (GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             $response = $e->getResponse();
         } finally {
             $contents = $response->getBody()->getContents();
