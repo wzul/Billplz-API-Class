@@ -1,5 +1,5 @@
 # Billplz API Class
-Billplz API v3 using cURL
+Billplz API v3 using Guzzle 6
 
 # Latest Version: 3.01
 # Last Update: 5 May 2017
