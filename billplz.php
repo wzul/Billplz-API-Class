@@ -480,8 +480,10 @@ class BillplzAction {
     public function setURL($mode, $id = '') {
         if ($mode == 'Staging') {
             $this->url = self::$staging;
-        } else {
+        } elseif ($mode == 'Production') {
             $this->url = self::$production;
+        } else {
+            exit('Invalid API Key Provided');
         }
         if ($this->action == 'DELETE' || $this->action == 'CHECK') {
             $this->url .= 'bills/' . $id;
