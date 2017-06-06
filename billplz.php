@@ -7,23 +7,48 @@ use GuzzleHttp\Exception\ClientException;
 
 class Billplz {
 
-    public static $version = 3.01;
+    public static $version = 3.02;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
 
-    public function __construct() {
+    /*
+     * API Key & X Signature Key may changed anytime
+     * Provided if API Key and X Signature not provided
+     */
+    public static $api_key = '4e49de80-1670-4606-84f8-2f1d33a38670';
+    public static $x_signature = 'S-0Sq67GFD9Y5iXmi5iXMKsA';
+
+    public function __construct($api_key = '') {
         $this->array = array();
         $this->obj = new BillplzAction;
+        if (empty($api_key)) {
+            $this->obj->setAPI(self::$api_key);
+        } else {
+            $this->obj->setAPI($api_key);
+        }
     }
 
-    public function getCollectionIndex($api_key, $page = '1', $mode = '', $status = null) {
-        $this->obj->setAPI($api_key);
+    /*
+     * Calling it with empty parameter will result to staging API Key
+     * Default: Staging API Key
+     */
+
+    public function setAPIKey($api_key = '') {
+        if (empty($api_key)) {
+            $this->obj->setAPI(self::$api_key);
+        } else {
+            $this->obj->setAPI($api_key);
+        }
+        return $this;
+    }
+
+    public function getCollectionIndex($page = '1', $mode = '', $status = null) {
 
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
 
         $this->obj->setAction('GETCOLLECTIONINDEX');
@@ -38,7 +63,12 @@ class Billplz {
         return $data;
     }
 
-    public static function getRedirectData($signkey) {
+    public static function getRedirectData($signkey = '') {
+
+        if (empty($signkey)) {
+            $signkey = self::$x_signature;
+        }
+
         $data = [
             'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : exit('Billplz ID is not supplied'),
             'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : exit('Please enable Billplz XSignature Payment Completion'),
@@ -68,7 +98,12 @@ class Billplz {
         }
     }
 
-    public static function getCallbackData($signkey) {
+    public static function getCallbackData($signkey = '') {
+
+        if (empty($signkey)) {
+            $signkey = self::$x_signature;
+        }
+
         $data = [
             'amount' => isset($_POST['amount']) ? $_POST['amount'] : exit('Amount is not supplied'),
             'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : exit('Collection ID is not supplied'),
@@ -108,47 +143,18 @@ class Billplz {
     }
 
     /*
-     * Funciton: check_apikey_collectionid is
-     * deprecated. Will be removed soon
-     */
-
-    public function check_apikey_collectionid($api_key, $collection_id, $mode) {
-        $array = array(
-            'collection_id' => $collection_id,
-            'email' => 'aa@gmail.com',
-            'description' => 'test',
-            'mobile' => '60145356443',
-            'name' => "Jone Doe",
-            'amount' => 150, // RM20
-            'callback_url' => "http://yourwebsite.com/return_url"
-        );
-        $this->obj->setAPI($api_key);
-        $this->obj->setAction('CREATE');
-        $this->obj->setURL($mode);
-        $data = $this->obj->curl_action($array);
-        if (isset($data['error']['type'])) {
-            return false;
-        } elseif (isset($data['url'])) {
-            $this->obj->setAction('DELETE');
-            $this->obj->setURL($mode, $data['id']);
-            $this->obj->curl_action();
-            return true;
-        }
-    }
-
-    /*
      * Return true if delete bill success
      * Return false if delete bill not success
      */
 
-    public function deleteBill($api_key, $bill_id, $mode = '') {
-        $this->obj->setAPI($api_key);
+    public function deleteBill($bill_id, $mode = '') {
+
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
         $this->obj->setAction('DELETE');
         $this->obj->setURL($mode, $bill_id);
@@ -249,17 +255,16 @@ class Billplz {
         return $this;
     }
 
-    public function create_collection($api_key, $title = 'Payment For Purchase', $mode = '') {
-        $this->obj->setAPI($api_key);
-        
+    public function create_collection($title = 'Payment For Purchase', $mode = '') {
+
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
-        
+
         $this->obj->setAction('COLLECTIONS');
 
         $this->obj->setURL($mode);
@@ -275,8 +280,7 @@ class Billplz {
      * Else, exit the program.
      */
 
-    public function check_api_key($api_key) {
-        $this->obj->setAPI($api_key);
+    public function check_api_key() {
         $this->obj->setAction('GETCOLLECTIONINDEX');
         $array = [
             'page' => '1',
@@ -298,16 +302,16 @@ class Billplz {
         }
     }
 
-    public function check_collection_id($api_key, $collection_id, $mode = '') {
+    public function check_collection_id($collection_id, $mode = '') {
 
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
-        $this->obj->setAPI($api_key);
+
         $this->obj->setAction('CHECKCOLLECTION');
         $this->obj->setURL($mode);
         $data = [
@@ -328,9 +332,9 @@ class Billplz {
      * If collection is not created yet, create one
      */
 
-    public function get_active_collection($api_key, $data) {
+    public function get_active_collection($data) {
         if (empty($data['collections'])) {
-            $collection_id = $this->create_collection($api_key);
+            $collection_id = $this->create_collection();
         } else {
             for ($i = 0; $i < sizeof($data['collections']); $i++) {
                 if ($data['collections'][$i]['status'] == 'active') {
@@ -344,13 +348,13 @@ class Billplz {
         return $collection_id;
     }
 
-    public function create_bill($api_key, $checkCollection = false, $mode = '') {
+    public function create_bill($checkCollection = false, $mode = '') {
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
 
         /*
@@ -359,7 +363,7 @@ class Billplz {
          */
 
         if ($checkCollection && isset($this->array['collection_id'])) {
-            $status = $this->check_collection_id($api_key, $this->array['collection_id'], $mode);
+            $status = $this->check_collection_id($this->array['collection_id'], $mode);
             if (!$status)
                 unset($this->array['collection_id']);
         }
@@ -370,12 +374,11 @@ class Billplz {
          */
 
         if (!isset($this->array['collection_id'])) {
-            $collectionData = $this->getCollectionIndex($api_key, $mode);
+            $collectionData = $this->getCollectionIndex($mode);
 
-            $this->array['collection_id'] = $this->get_active_collection($api_key, $collectionData);
+            $this->array['collection_id'] = $this->get_active_collection($collectionData);
         }
 
-        $this->obj->setAPI($api_key);
         $this->obj->setAction('CREATE');
         $this->obj->setURL($mode);
 
@@ -441,14 +444,14 @@ class Billplz {
      * Get Bills 
      */
 
-    public function check_bill($api_key, $bill_id, $mode = '') {
-        $this->obj->setAPI($api_key);
+    public function check_bill($bill_id, $mode = '') {
+
         /*
          * Identify mode if not supplied
          */
 
         if (empty($mode)) {
-            $mode = $this->check_api_key($api_key);
+            $mode = $this->check_api_key();
         }
         $this->obj->setAction('CHECK');
         $this->obj->setURL($mode, $bill_id);
