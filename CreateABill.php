@@ -6,9 +6,10 @@
  * 
  */
 require 'billplz.php';
-$api_key = '4e49de80-1670-4606-84f8-2f1d33a38670';
 
 $a = new Billplz;
+//$a = new Billplz('4e49de80-1670-4606-84f8-2f1d33a38670');
+//$a->setAPIKey('4e49de80-1670-4606-84f8-2f1d33a38670');
 $a->setName("Wan Zulkarnain");
 $a->setAmount('10.60');
 $a->setEmail('wan@wanzul-hosting.com');
@@ -24,6 +25,6 @@ $a->setPassbackURL('http://callback-url.com', 'http://redirect-url.com');
 //$a->setDeliver('2'); //SMS Notification
 //$a->setDeliver('3'); //Email & SMS Notification
 //$a->create_bill($api_key, true);
-$a->create_bill($api_key);
+$a->create_bill();
 //echo $a->getURL();
 header('Location: ' .$a->getURL());
