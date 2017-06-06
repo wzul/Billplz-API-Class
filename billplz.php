@@ -298,7 +298,7 @@ class Billplz {
         if (isset($status['collections'])) {
             return 'Staging';
         } else {
-            exit('Invalid API Key Provided');
+            return 'Invalid';
         }
     }
 
