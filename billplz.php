@@ -521,7 +521,7 @@ class BillplzAction {
 
         if ($this->action == 'DELETE') {
             $reqType = 'DELETE';
-        } else if ($this->action == 'CHECK' || $this->action == 'GETCOLLECTIONINDEX') {
+        } else if ($this->action == 'CHECK' || $this->action == 'GETCOLLECTIONINDEX' || $this->action == 'CHECKCOLLECTION') {
             $reqType = 'GET';
         } else {
             $reqType = 'POST';
