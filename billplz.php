@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\ClientException;
 
 class Billplz {
 
-    public static $version = 3.02;
+    public static $version = 3.03;
     var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
 
     /*
@@ -298,7 +298,8 @@ class Billplz {
         if (isset($status['collections'])) {
             return 'Staging';
         } else {
-            return 'Invalid';
+            $this->setAPIKey();
+            return 'Staging';
         }
     }
 
@@ -319,8 +320,9 @@ class Billplz {
         ];
         $status = $this->obj->curl_action($data);
         if (isset($status['id'])) {
-            if ($status['id'] == $collection_id)
+            if ($status['id'] == $collection_id) {
                 return true;
+            }
         }
         return false;
     }
