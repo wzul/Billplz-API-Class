@@ -72,10 +72,10 @@ if (!class_exists('Billplz')) {
             }
 
             $data = [
-                'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : exit('Billplz ID is not supplied'),
-                'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : exit('Please enable Billplz XSignature Payment Completion'),
-                'paid' => isset($_GET['billplz']['paid']) ? $_GET['billplz']['paid'] : exit('Please enable Billplz XSignature Payment Completion'),
-                'x_signature' => isset($_GET['billplz']['x_signature']) ? $_GET['billplz']['x_signature'] : exit('Please enable Billplz XSignature Payment Completion'),
+                'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : self::throwException('Billplz ID is not supplied'),
+                'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
+                'paid' => isset($_GET['billplz']['paid']) ? $_GET['billplz']['paid'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
+                'x_signature' => isset($_GET['billplz']['x_signature']) ? $_GET['billplz']['x_signature'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
             ];
             $preparedString = '';
             foreach ($data as $key => $value) {
@@ -96,8 +96,12 @@ if (!class_exists('Billplz')) {
             if ($data['x_signature'] === $generatedSHA) {
                 return $data;
             } else {
-                exit('Data has been tempered');
+                self::throwException('Data has been tempered');
             }
+        }
+        
+        public static function throwException($message){
+            throw new Exception($message);
         }
 
         public static function getCallbackData($signkey = '') {
@@ -107,19 +111,19 @@ if (!class_exists('Billplz')) {
             }
 
             $data = [
-                'amount' => isset($_POST['amount']) ? $_POST['amount'] : exit('Amount is not supplied'),
-                'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : exit('Collection ID is not supplied'),
+                'amount' => isset($_POST['amount']) ? $_POST['amount'] : self::throwException('Amount is not supplied'),
+                'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : self::throwException('Collection ID is not supplied'),
                 'due_at' => isset($_POST['due_at']) ? $_POST['due_at'] : '',
                 'email' => isset($_POST['email']) ? $_POST['email'] : '',
-                'id' => isset($_POST['id']) ? $_POST['id'] : exit('Billplz ID is not supplied'),
+                'id' => isset($_POST['id']) ? $_POST['id'] : self::throwException('Billplz ID is not supplied'),
                 'mobile' => isset($_POST['mobile']) ? $_POST['mobile'] : '',
-                'name' => isset($_POST['name']) ? $_POST['name'] : exit('Payer Name is not supplied'),
+                'name' => isset($_POST['name']) ? $_POST['name'] : self::throwException('Payer Name is not supplied'),
                 'paid_amount' => isset($_POST['paid_amount']) ? $_POST['paid_amount'] : '',
                 'paid_at' => isset($_POST['paid_at']) ? $_POST['paid_at'] : '',
-                'paid' => isset($_POST['paid']) ? $_POST['paid'] : exit('Paid status is not supplied'),
-                'state' => isset($_POST['state']) ? $_POST['state'] : exit('State is not supplied'),
-                'url' => isset($_POST['url']) ? $_POST['url'] : exit('URL is not supplied'),
-                'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] : exit('X Signature is not enabled'),
+                'paid' => isset($_POST['paid']) ? $_POST['paid'] : self::throwException('Paid status is not supplied'),
+                'state' => isset($_POST['state']) ? $_POST['state'] : self::throwException('State is not supplied'),
+                'url' => isset($_POST['url']) ? $_POST['url'] : self::throwException('URL is not supplied'),
+                'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] : self::throwException('X Signature is not enabled'),
             ];
             $preparedString = '';
             foreach ($data as $key => $value) {
@@ -140,7 +144,7 @@ if (!class_exists('Billplz')) {
             if ($data['x_signature'] === $generatedSHA) {
                 return $data;
             } else {
-                exit('Data has been tempered');
+                self::throwException('Data has been tempered');
             }
         }
 
@@ -487,7 +491,7 @@ if (!class_exists('Billplz')) {
             } elseif ($mode == 'Production') {
                 $this->url = self::$production;
             } else {
-                exit('Invalid API Key Provided');
+                self::throwException('Invalid API Key Provided');
             }
             if ($this->action == 'DELETE' || $this->action == 'CHECK') {
                 $this->url .= 'bills/' . $id;
