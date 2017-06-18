@@ -10,7 +10,8 @@ if (!class_exists('Billplz')) {
     class Billplz {
 
         public static $version = 3.03;
-        var $array, $obj, $auto_submit, $url, $id, $deliverLevel, $errorMessage;
+        var $array, $obj, $url, $id, $deliverLevel, $errorMessage;
+        private $api_key_status = false;
 
         /*
          * API Key & X Signature Key may changed anytime
@@ -296,17 +297,24 @@ if (!class_exists('Billplz')) {
 
             $status = $this->obj->curl_action($array);
             if (isset($status['collections'])) {
+                $this->api_key_status = true;
                 return 'Production';
             }
             $this->obj->setURL('Staging');
             $status = $this->obj->curl_action($array);
 
             if (isset($status['collections'])) {
+                $this->api_key_status = true;
                 return 'Staging';
             } else {
                 $this->setAPIKey();
+                $this->api_key_status = false;
                 return 'Staging';
             }
+        }
+        
+        public function get_api_key_status(){
+            return $this->api_key_status;
         }
 
         public function check_collection_id($collection_id, $mode = '') {
