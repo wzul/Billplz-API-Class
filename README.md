@@ -1,11 +1,18 @@
 # Billplz API Class
-Billplz API v3 using Guzzle 6
 
-# Latest Version: 3.02
-# Last Update: 7 June 2017
+- Billplz API v3 using Guzzle 6 <br>
+- Latest Version: **3.03** <br>
+- Last Update: **19 June 2017**
 
 # Minimum System Requirement
-- PHP 5.5 or newer 
+- PHP 5.5 or newer
+- Linux or Windows-Based Hosting/Server
+
+# Installation
+
+1. Clone this repository
+2. Import **billplz.php** file to your PHP file.
+3. Create object and use the provided method
 
 # Features
 
