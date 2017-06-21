@@ -9,7 +9,7 @@ if (!class_exists('Billplz')) {
 
     class Billplz {
 
-        public static $version = 3.03;
+        public static $version = 3.04;
         var $array, $obj, $url, $id, $deliverLevel, $errorMessage;
         private $api_key_status = false;
 
@@ -100,8 +100,8 @@ if (!class_exists('Billplz')) {
                 self::throwException('Data has been tempered');
             }
         }
-        
-        public static function throwException($message){
+
+        public static function throwException($message) {
             throw new Exception($message);
         }
 
@@ -232,12 +232,16 @@ if (!class_exists('Billplz')) {
         }
 
         public function setReference_1($reference_1) {
-            $this->array['reference_1'] = substr($reference_1, 0, 119);
+            if (!empty($reference_1)) {
+                $this->array['reference_1'] = substr($reference_1, 0, 119);
+            }
             return $this;
         }
 
-        public function setReference_2($reference_1) {
-            $this->array['reference_2'] = substr($reference_1, 0, 119);
+        public function setReference_2($reference_2) {
+            if (!empty($reference_2)) {
+                $this->array['reference_2'] = substr($reference_2, 0, 119);
+            }
             return $this;
         }
 
@@ -253,12 +257,16 @@ if (!class_exists('Billplz')) {
         }
 
         public function setReference_1_Label($label) {
-            $this->array['reference_1_label'] = substr($label, 0, 19);
+            if (!empty($label)) {
+                $this->array['reference_1_label'] = substr($label, 0, 19);
+            }
             return $this;
         }
 
         public function setReference_2_Label($label) {
-            $this->array['reference_2_label'] = substr($label, 0, 19);
+            if (!empty($label)) {
+                $this->array['reference_2_label'] = substr($label, 0, 19);
+            }
             return $this;
         }
 
@@ -312,8 +320,8 @@ if (!class_exists('Billplz')) {
                 return 'Staging';
             }
         }
-        
-        public function get_api_key_status(){
+
+        public function get_api_key_status() {
             return $this->api_key_status;
         }
 
