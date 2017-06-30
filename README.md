@@ -75,7 +75,7 @@ $billplz
 
 ```
 $bill_id = $billplz->getID();
-$billl_url = billplz->getURL();
+$billl_url = $billplz->getURL();
 ```
 
 # Example: 2. Get A Bill
