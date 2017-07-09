@@ -170,6 +170,17 @@ if (!class_exists('Billplz')) {
             if (empty($data)) {
                 return true;
             }
+            
+            /*
+             * In case of the system admin changing Billplz Account, 
+             * the bills that trying to be deleted not in the new account,
+             * think it as success
+             */
+            
+            if ($data['type']==='RecordNotFound'){
+                return true;
+            }
+            
             return false;
         }
 
