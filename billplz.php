@@ -57,10 +57,10 @@ if (!class_exists('Billplz')) {
             $this->obj->setAction('GETCOLLECTIONINDEX');
 
             $this->obj->setURL($mode);
-            $array = [
+            $array = array (
                 'page' => $page,
                 'status' => $status,
-            ];
+            );
             $data = $this->obj->curl_action($array);
 
             return $data;
@@ -72,12 +72,12 @@ if (!class_exists('Billplz')) {
                 $signkey = self::$x_signature;
             }
 
-            $data = [
+            $data = array (
                 'id' => isset($_GET['billplz']['id']) ? $_GET['billplz']['id'] : self::throwException('Billplz ID is not supplied'),
                 'paid_at' => isset($_GET['billplz']['paid_at']) ? $_GET['billplz']['paid_at'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
                 'paid' => isset($_GET['billplz']['paid']) ? $_GET['billplz']['paid'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
                 'x_signature' => isset($_GET['billplz']['x_signature']) ? $_GET['billplz']['x_signature'] : self::throwException('Please enable Billplz XSignature Payment Completion'),
-            ];
+            );
             $preparedString = '';
             foreach ($data as $key => $value) {
                 $preparedString .= 'billplz' . $key . $value;
@@ -111,7 +111,7 @@ if (!class_exists('Billplz')) {
                 $signkey = self::$x_signature;
             }
 
-            $data = [
+            $data = array (
                 'amount' => isset($_POST['amount']) ? $_POST['amount'] : self::throwException('Amount is not supplied'),
                 'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : self::throwException('Collection ID is not supplied'),
                 'due_at' => isset($_POST['due_at']) ? $_POST['due_at'] : '',
@@ -125,7 +125,7 @@ if (!class_exists('Billplz')) {
                 'state' => isset($_POST['state']) ? $_POST['state'] : self::throwException('State is not supplied'),
                 'url' => isset($_POST['url']) ? $_POST['url'] : self::throwException('URL is not supplied'),
                 'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] : self::throwException('X Signature is not enabled'),
-            ];
+            );
             $preparedString = '';
             foreach ($data as $key => $value) {
                 $preparedString .= $key . $value;
@@ -283,9 +283,9 @@ if (!class_exists('Billplz')) {
             $this->obj->setAction('COLLECTIONS');
 
             $this->obj->setURL($mode);
-            $data = [
+            $data = array (
                 'title' => $title
-            ];
+            );
             $collection = $this->obj->curl_action($data);
             return $collection['id'];
         }
@@ -297,10 +297,10 @@ if (!class_exists('Billplz')) {
 
         public function check_api_key() {
             $this->obj->setAction('GETCOLLECTIONINDEX');
-            $array = [
+            $array = array(
                 'page' => '1',
                 'status' => null,
-            ];
+            );
             $this->obj->setURL('Production');
 
             $status = $this->obj->curl_action($array);
@@ -337,9 +337,9 @@ if (!class_exists('Billplz')) {
 
             $this->obj->setAction('CHECKCOLLECTION');
             $this->obj->setURL($mode);
-            $data = [
+            $data = array (
                 'id' => $collection_id
-            ];
+            );
             $status = $this->obj->curl_action($data);
             if (isset($status['id'])) {
                 if ($status['id'] == $collection_id) {
@@ -384,10 +384,10 @@ if (!class_exists('Billplz')) {
             $this->obj->setAction('GETTRANSACTIONINDEX');
 
             $this->obj->setURL($mode, $bill_id);
-            $array = [
+            $array = array (
                 'page' => $page,
                 'status' => $status,
-            ];
+            );
             $data = $this->obj->curl_action($array);
 
             return $data;
@@ -586,10 +586,10 @@ if (!class_exists('Billplz')) {
                 $reqType = 'POST';
             }
 
-            $preparedHeader = [
+            $preparedHeader = array (
                 'auth' => [$this->api_key, ''],
                 'verify' => false,
-            ];
+            );
 
             if ($this->action == 'CREATE' || $this->action == 'COLLECTIONS') {
                 $preparedHeader['form_params'] = $data;
