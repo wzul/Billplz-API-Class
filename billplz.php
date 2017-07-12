@@ -223,7 +223,7 @@ if (!class_exists('Billplz')) {
         }
 
         public function setAmount($amount) {
-            $this->array['amount'] = $amount * 100;
+            $this->array['amount'] = preg_replace("/[^0-9]/","",$amount) * 100;
             return $this;
         }
 
