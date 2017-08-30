@@ -104,6 +104,16 @@ if (!class_exists('Billplz')) {
         public static function throwException($message) {
             throw new Exception($message);
         }
+		
+		public static function getSignature()
+        {
+            if (isset($_POST['x_signature'])) {
+                return $_POST['x_signature'];
+            } else if (isset($_GET['billplz']['x_signature'])) {
+                return $_GET['billplz']['x_signature'];
+            }
+            self::throwException('X Signature is not enabled');
+        }
 
         public static function getCallbackData($signkey = '') {
 
