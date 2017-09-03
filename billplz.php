@@ -9,7 +9,7 @@ if (!class_exists('Billplz')) {
 
     class Billplz {
 
-        public static $version = 3.04;
+        public static $version = 3.06;
         var $array, $obj, $url, $id, $deliverLevel, $errorMessage;
         private $api_key_status = false;
 
