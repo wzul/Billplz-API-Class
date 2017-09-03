@@ -1,8 +1,8 @@
 # Billplz API Class
 
 - Billplz API v3 using Guzzle 6 <br>
-- Latest Version: **3.05** <br>
-- Last Update: **12 July 2017**
+- Latest Version: **3.06** <br>
+- Last Update: **3 September 2017**
 
 # Minimum System Requirement
 - PHP 5.5 or newer
