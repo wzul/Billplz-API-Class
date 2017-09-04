@@ -122,10 +122,9 @@ To use this method, you must ensure that X Signature Key is enabled for your acc
 Billplz::getRedirectData('<x_signature_key>');
 
 // Callback
-
 Billplz::getCallbackData('<x_signature_key>');
 ```
 
 # Other
 
-Please open an issue or email to wan@wanzul-hosting.com
+Please open an issue or email to wan@billplz.com
