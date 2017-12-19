@@ -1,8 +1,8 @@
 # Billplz API Class
 
 - Billplz API v3 using Guzzle 6 <br>
-- Latest Version: **3.06** <br>
-- Last Update: **3 September 2017**
+- Latest Version: **3.07** <br>
+- Last Update: **19 December 2017**
 
 # Minimum System Requirement
 - PHP 5.5 or newer
@@ -66,7 +66,7 @@ $billplz
         ->setReference_1_Label('A')
         ->setReference_2('Lot 100, AAA, BB')
         ->setReference_2_Label('Address')
-        ->setMobile('0145356443');
+        ->setMobile('0145356443')
         ->setDeliver('3')
         ->create_bill(true);
 ```
