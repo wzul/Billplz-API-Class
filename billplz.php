@@ -194,7 +194,7 @@ if (!class_exists('Billplz')) {
              * think it as success
              */
 
-            if ($data['type'] === 'RecordNotFound') {
+            if ($data['error']['type'] === 'RecordNotFound') {
                 return true;
             }
 
