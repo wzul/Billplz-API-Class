@@ -667,7 +667,8 @@ if (!class_exists('Billplz')) {
             return $this;
         }
     }
-
+}
+if (!class_exists('BillplzAction')) {
     class BillplzAction
     {
 
