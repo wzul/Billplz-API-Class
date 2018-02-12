@@ -1,5 +1,5 @@
 {
-    "name": "billplz/api",
+    "name": "billplz/billplz-api",
     "description": "A Billplz API Class",
     "type": "library",
     "keyword": ["Billplz", "Payment Gateway"],
