@@ -17,17 +17,6 @@ composer require billplz/api
 
 ## Usages
 
-
-
-## API Access Ability
-
-- Create A Collection
-- Create A Bill
-- Get A Bill
-- Delete A Bill
-- Check Collection ID Availability
-- Get Collection Index
-
 ## Other
 
 Please open an issue or email to wan@billplz.com
