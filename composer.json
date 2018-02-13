@@ -17,7 +17,7 @@
     },
     "suggest": {
         "guzzlehttp/guzzle": "HTTP Client Library ~6.0"
-    }
+    },
     "autoload": {
         "psr-4": {
             "Billplz\\": "src/"
