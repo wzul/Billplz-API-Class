@@ -21,16 +21,9 @@ class API
         return $this->connect->getCollectionIndex($parameter);
     }
 
-    public function createCollection($parameter)
+    public function createCollection(string $parameter, array $optional = array())
     {
-        if (\is_array($parameter)) {
-            return $this->connect->createCollectionArray($parameter);
-        }
-        if (\is_string($parameter)) {
-            return $this->connect->createCollection($parameter);
-        }
-
-        throw new Exception('Create Collection Error!');
+        return $this->connect->createCollection($parameter, $optional);
     }
 
     public function getCollection($parameter)
@@ -42,11 +35,18 @@ class API
             return $this->connect->getCollection($parameter);
         }
 
-        throw new Exception('Get Collection Error!');
+        throw new \Exception('Get Collection Error!');
     }
 
     public function createOpenCollection(array $parameter, array $optional = array())
     {
+        $parameter['title'] = substr($parameter['title'], 0, 49);
+        $parameter['description'] = substr($parameter['description'], 0, 199);
+
+        if (intval($parameter['amount']) > 999999999) {
+            throw new \Exception("Amount Invalid. Too big");
+        }
+
         return $this->connect->createOpenCollection($parameter, $optional);
     }
 
@@ -59,7 +59,7 @@ class API
             return $this->connect->getOpenCollection($parameter);
         }
 
-        throw new Exception('Get Open Collection Error!');
+        throw new \Exception('Get Open Collection Error!');
     }
 
     public function getOpenCollectionIndex(array $parameter = array())
@@ -76,10 +76,10 @@ class API
             return $this->connect->createMPICollection($parameter);
         }
 
-        throw new Exception('Create MPI Collection Error!');
+        throw new \Exception('Create MPI Collection Error!');
     }
 
-    public function getMPICollection()
+    public function getMPICollection($parameter)
     {
         if (\is_array($parameter)) {
             return $this->connect->getMPICollectionArray($parameter);
@@ -88,7 +88,7 @@ class API
             return $this->connect->getMPICollection($parameter);
         }
 
-        throw new Exception('Get MPI Collection Error!');
+        throw new \Exception('Get MPI Collection Error!');
     }
 
     public function createMPI(array $parameter, array $optional = array())
@@ -105,7 +105,7 @@ class API
             return $this->connect->getMPI($parameter);
         }
 
-        throw new Exception('Get MPI Error!');
+        throw new \Exception('Get MPI Error!');
     }
 
     public function deactivateCollection($parameter)
@@ -117,7 +117,7 @@ class API
             return $this->connect->deactivateCollection($parameter);
         }
 
-        throw new Exception('Deactivate Collection Error!');
+        throw new \Exception('Deactivate Collection Error!');
     }
 
     public function activateCollection($parameter)
@@ -129,32 +129,84 @@ class API
             return $this->connect->deactivateCollection($parameter, 'activate');
         }
 
-        throw new Exception('Activate Collection Error!');
+        throw new \Exception('Activate Collection Error!');
     }
 
-    public function createBill(array $parameter, array $optional = array())
+    public function createBill(array $parameter, array $optional = array(), string $sendCopy = '')
     {
+        /* Email or Mobile must be set */
+        if (empty($parameter['email']) && empty($parameter['mobile'])) {
+            throw new \Exception("Email or Mobile must be set!");
+        }
+
+        /* Manipulate Deliver features to allow Email/SMS Only copy */
+        if ($sendCopy === '0') {
+            $optioonal['deliver'] = 'false';
+        } elseif ($sendCopy === '1' && !empty($parameter['email'])) {
+            $optional['deliver'] = 'true';
+            unset($parameter['mobile']);
+        } elseif ($sendCopy === '2' && !empty($parameter['mobile'])) {
+            $optional['deliver'] = 'true';
+            unset($parameter['email']);
+        } elseif ($sendCopy === '3') {
+            $optional['deliver'] = 'true';
+        }
+
+        /* Validate Mobile Number first */
+        if (!empty($parameter['mobile'])) {
+
+            /* Strip all unwanted character */
+            $parameter['mobile'] = preg_replace('/[^0-9]/', '', $parameter['mobile']);
+
+            /* Add '6' if applicable */
+            $parameter['mobile'] = $parameter['mobile'][0] === '0' ? '6'.$parameter['mobile'] : $parameter['mobile'];
+
+            /* If the number doesn't have valid formatting, reject it */
+            /* The ONLY valid format '<1 Number>' + <10 Numbers> or '<1 Number>' + <11 Numbers> */
+            /* Example: '60141234567' or '601412345678' */
+            if (!preg_match('/^[0-9]{11,12}$/', $parameter['mobile'], $m)) {
+                $parameter['mobile'] = '';
+            }
+        }
+
+        /* Create Bills */
         $bill = $this->connect->createBill($parameter, $optional);
         if ($bill[0] === 200) {
             return $bill;
         }
-        $collection = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'active')));
-        if ($collection[0] !== 200) {
-            throw new Exception('Failed to create Bill');
+
+        /* Check if Failed caused by wrong Collection ID */
+        $collection = $this->toArray($this->getCollection($parameter['collection_id']));
+
+        /* If doesn't exists or belong to another merchant */
+        if ($collection[0] === 404 || $collection[0] === 401) {
+
+            /* Get All Active & Inactive Collection List */
+            $collectionIndexActive = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'active')));
+            $collectionIndexInactive = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'inactive')));
+
+            /* If Active Collection not available but Inactive Collection is available */
+            if (empty($collectionIndexActive[1]['collections']) && !empty($collectionIndexInactive[1]['collections'])) {
+
+                /* Use inactive collection */
+                $parameter['collection_id'] = $collectionIndexInactive[1]['collections'][0]['id'];
+            }
+
+            /* If there is Active Collection */
+            elseif (!empty($collectionIndexActive[1]['collections'])) {
+                $parameter['collection_id'] = $collectionIndexActive[1]['collections'][0]['id'];
+            }
+
+            /* If there is no Active and Inactive Collection */
+            else {
+                $collection = $this->toArray($this->createCollection('Payment for Purchase'));
+                $parameter['collection_id'] = $collection[1]['id'];
+            }
+        } else {
+            return $bill;
         }
 
-        $parameter['collection_id'] = $collection[1]['collections'][0]['id'];
-
-        if (empty($parameter['collection_id'])) {
-            $collection = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'inactive')));
-            $parameter['collection_id'] = $collection[1]['collections'][0]['id'];
-        }
-
-        if (empty($parameter['collection_id'])) {
-            $collection = $this->toArray($this->createCollection('Payment for Purchase'));
-            $parameter['collection_id'] = $collection[1]['id'];
-        }
-
+        /* Create Bills */
         return $this->connect->createBill($parameter, $optional);
     }
 
@@ -167,7 +219,19 @@ class API
             return $this->connect->deleteBill($parameter);
         }
 
-        throw new Exception('Delete Bill Error!');
+        throw new \Exception('Delete Bill Error!');
+    }
+
+    public function getBill($parameter)
+    {
+        if (\is_array($parameter)) {
+            return $this->connect->getBillArray($parameter);
+        }
+        if (\is_string($parameter)) {
+            return $this->connect->getBill($parameter);
+        }
+
+        throw new \Exception('Get Bill Error!');
     }
 
     public function bankAccountCheck($parameter)
@@ -179,7 +243,7 @@ class API
             return $this->connect->bankAccountCheck($parameter);
         }
 
-        throw new Exception('Registration Check by Account Number Error!');
+        throw new \Exception('Registration Check by Account Number Error!');
     }
 
     public function getTransactionIndex(string $id, array $parameter = array('page'=>'1'))
@@ -196,7 +260,7 @@ class API
             return $this->connect->getPaymentMethodIndex($parameter);
         }
 
-        throw new Exception('Get Payment Method Index Error!');
+        throw new \Exception('Get Payment Method Index Error!');
     }
 
     public function updatePaymentMethod(array $parameter)
@@ -218,7 +282,7 @@ class API
             return $this->connect->getBankAccount($parameter);
         }
 
-        throw new Exception('Get Bank Account Error!');
+        throw new \Exception('Get Bank Account Error!');
     }
 
     public function createBankAccount(array $parameter)
@@ -228,17 +292,30 @@ class API
 
     public function bypassBillplzPage(string $bill)
     {
-        $bills = json_decode($bill, true);
+        $bills = \json_decode($bill, true);
         if ($bills['reference_1_label']!=='Bank Code') {
-            return $bill;
+            return \json_encode($bill);
         }
 
-        $fpxBanks = $this->getFpxBanks();
+        $fpxBanks = $this->toArray($this->getFpxBanks());
         if ($fpxBanks[0] !== 200) {
-            return $bill;
+            return \json_encode($bill);
         }
 
-        $bills['url'].='auto_submit=true';
+        $found = false;
+        foreach ($fpxBanks[1]['banks'] as $bank) {
+            if ($bank['name'] === $bills['reference_1']) {
+                if ($bank['active']) {
+                    $found = true;
+                    break;
+                }
+                return \json_encode($bill);
+            }
+        }
+
+        if ($found) {
+            $bills['url'].='?auto_submit=true';
+        }
 
         return json_encode($bills);
     }

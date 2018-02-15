@@ -63,7 +63,7 @@ class Connect
             $this->is_staging = true;
             return $this;
         }
-        throw new Exception('The API Key is not valid. Check your API Key');
+        throw new \Exception('The API Key is not valid. Check your API Key');
     }
 
     public function getCollectionIndex(array $parameter = array())
@@ -83,37 +83,12 @@ class Connect
         return $return;
     }
 
-    public function createCollectionArray(array $parameter)
+    public function createCollection(string $title, array $optional = array())
     {
         $url = $this->url . 'v4/collections';
 
-        $return_array = array();
-
-        foreach ($parameter as $title) {
-            $data = ['title' => $title];
-
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $header = $this->header;
-                $header['form_params'] = $data;
-                $return = $this->guzzleProccessRequest('POST', $url, $header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
-    public function createCollection(string $title)
-    {
-        $url = $this->url . 'v4/collections';
-
-        $data = ['title' => $title];
+        $title = ['title' => $title];
+        $data = array_merge($title, $optional);
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $header = $this->header;
@@ -135,7 +110,7 @@ class Connect
         $url = $this->url . 'v4/open_collections';
 
         //if (sizeof($parameter) !== sizeof($optional) && !empty($optional)){
-        //    throw new Exception('Optional parameter size is not match with Required parameter');
+        //    throw new \Exception('Optional parameter size is not match with Required parameter');
         //}
 
         $data = array_merge($parameter, $optional);
@@ -335,7 +310,7 @@ class Connect
         $url = $this->url . 'v4/mass_payment_instructions';
 
         //if (sizeof($parameter) !== sizeof($optional) && !empty($optional)){
-        //    throw new Exception('Optional parameter size is not match with Required parameter');
+        //    throw new \Exception('Optional parameter size is not match with Required parameter');
         //}
 
         $data = array_merge($parameter, $optional);
@@ -404,7 +379,7 @@ class Connect
                 'x_signature' =>  $_GET['billplz']['x_signature']
             );
             $type = 'redirect';
-        } else {
+        } elseif (isset($_POST['x_signature'])) {
             $data = array(
                'amount' => isset($_POST['amount']) ? $_POST['amount'] : '',
                'collection_id' => isset($_POST['collection_id']) ? $_POST['collection_id'] : '',
@@ -421,11 +396,17 @@ class Connect
                'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] :'',
            );
             $type = 'callback';
+        } else {
+            return false;
         }
 
         foreach ($data as $key => $value) {
-            $signingString .= $key . $value;
-            if ($key === 'url') {
+            if (isset($_GET['billplz']['id'])) {
+                $signingString .= 'billplz'.$key . $value;
+            } else {
+                $signingString .= $key . $value;
+            }
+            if (($key === 'url' && isset($_POST['x_signature']))|| ($key === 'paid' && isset($_GET['billplz']['id']))) {
                 break;
             } else {
                 $signingString .= '|';
@@ -438,12 +419,13 @@ class Connect
         $data['paid'] = $data['paid'] === 'true' ? true : false;
 
         $signedString = hash_hmac('sha256', $signingString, $x_signature_key);
+
         if ($data['x_signature'] === $signedString) {
             $data['type'] = $type;
             return $data;
         }
 
-        throw new Exception('Signature Mismatch!');
+        throw new \Exception('X Signature Calculation Mismatch!');
     }
 
     public function deactivateColletionArray(array $parameter, string $option = 'deactivate')
@@ -498,7 +480,7 @@ class Connect
         $url = $this->url . 'v3/bills';
 
         //if (sizeof($parameter) !== sizeof($optional) && !empty($optional)){
-        //    throw new Exception('Optional parameter size is not match with Required parameter');
+        //    throw new \Exception('Optional parameter size is not match with Required parameter');
         //}
 
         $data = array_merge($parameter, $optional);
@@ -510,6 +492,49 @@ class Connect
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
             curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
+            $body = curl_exec($this->process);
+            $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
+            $return = array($header,$body);
+        }
+
+        return $return;
+    }
+
+    public function getBillArray(array $parameter)
+    {
+        $return_array = array();
+
+        foreach ($parameter as $id) {
+            $url = $this->url . 'v3/bills/'.$id;
+
+            if ($this->process instanceof \GuzzleHttp\Client) {
+                $header = $this->header;
+                $header['form_params'] = array();
+                $return = $this->guzzleProccessRequest('GET', $url, $header);
+            } else {
+                curl_setopt($this->process, CURLOPT_URL, $url);
+                curl_setopt($this->process, CURLOPT_POST, 0);
+                $body = curl_exec($this->process);
+                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
+                $return = array($header,$body);
+            }
+            array_push($return_array, $return);
+        }
+
+        return $return_array;
+    }
+
+    public function getBill(string $id)
+    {
+        $url = $this->url . 'v3/bills/'.$id;
+
+        if ($this->process instanceof \GuzzleHttp\Client) {
+            $header = $this->header;
+            $header['form_params'] = array();
+            $return = $this->guzzleProccessRequest('GET', $url, $header);
+        } else {
+            curl_setopt($this->process, CURLOPT_URL, $url);
+            curl_setopt($this->process, CURLOPT_POST, 0);
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);
@@ -545,8 +570,6 @@ class Connect
     public function deleteBill(string $id)
     {
         $url = $this->url . 'v3/bills/'.$id;
-
-        $data = ['title' => $title];
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $header = $this->header;
@@ -605,7 +628,7 @@ class Connect
         $return_array = array();
 
         foreach ($parameter as $id) {
-            $url = $this->url . 'v3/collections/'.$id;
+            $url = $this->url . 'v3/collections/'.$id.'/payment_methods';
             if ($this->process instanceof \GuzzleHttp\Client) {
                 $return = $this->guzzleProccessRequest('GET', $url, $this->header);
             } else {
@@ -623,7 +646,7 @@ class Connect
 
     public function getPaymentMethodIndex(string $id)
     {
-        $url = $this->url . 'v3/collections/'.$id;
+        $url = $this->url . 'v3/collections/'.$id.'/payment_methods';
         if ($this->process instanceof \GuzzleHttp\Client) {
             $return = $this->guzzleProccessRequest('GET', $url, $this->header);
         } else {
@@ -657,7 +680,7 @@ class Connect
     public function updatePaymentMethod(array $parameter)
     {
         if (!isset($parameter['collection_id'])) {
-            throw new Exception('Collection ID is not passed on updatePaymethodMethod');
+            throw new \Exception('Collection ID is not passed on updatePaymethodMethod');
         }
         $url = $this->url . 'v3/collections/'.$parameter['collection_id'].'/payment_methods';
 
@@ -683,7 +706,7 @@ class Connect
     public function getBankAccountIndex(array $parameter)
     {
         if (!is_array($parameter['account_numbers'])) {
-            throw new Exception('Not valid account numbers.');
+            throw new \Exception('Not valid account numbers.');
         }
 
         $parameter = http_build_query($parameter);
@@ -747,11 +770,11 @@ class Connect
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $header = $this->header;
-            $header['form_params'] = $data;
+            $header['form_params'] = $parameter;
             $return = $this->guzzleProccessRequest('POST', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
-            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($paraparameter));
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);
