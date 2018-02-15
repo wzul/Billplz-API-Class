@@ -69,7 +69,6 @@ class Connect
     public function getCollectionIndex(array $parameter = array())
     {
         $url = $this->url . 'v4/collections?'.http_build_query($parameter);
-        ;
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $return = $this->guzzleProccessRequest('GET', $url, $this->header);
