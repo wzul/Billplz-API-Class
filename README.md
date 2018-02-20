@@ -1,8 +1,8 @@
 # Billplz API Class
-[![Latest Stable Version](https://poser.pugx.org/billplz/api)](https://packagist.org/packages/billplz/api)
-[![Total Downloads](https://poser.pugx.org/billplz/api/downloads)](https://packagist.org/packages/billplz/api)
-[![Latest Unstable Version](https://poser.pugx.org/billplz/api/v/unstable)](//packagist.org/packages/billplz/api)
-[![License](https://poser.pugx.org/billplz/api/license)](https://packagist.org/packages/billplz/api)
+[![Latest Stable Version](https://poser.pugx.org/billplz/billplz-api)](https://packagist.org/packages/billplz/billplz-api)
+[![Total Downloads](https://poser.pugx.org/billplz/billplz-api/downloads)](https://packagist.org/packages/billplz/billplz-api)
+[![Latest Unstable Version](https://poser.pugx.org/billplz/billplz-api/v/unstable)](//packagist.org/packages/billplz/billplz-api)
+[![License](https://poser.pugx.org/billplz-api/api/license)](https://packagist.org/packages/billplz/billplz-api)
 
 ## Minimum System Requirement
 - PHP 5.6 or newer
@@ -12,7 +12,7 @@
 To install through composer, simply execute:
 
 ```bash
-composer require billplz/api guzzlehttp/guzzle
+composer require billplz/billplz-api guzzlehttp/guzzle
 ```
 
 or
@@ -20,7 +20,7 @@ or
 ```json
 {
     "require": {
-        "billplz/api": "^3.7",
+        "billplz/billplz-api": "^3.7",
         "guzzlehttp/guzzle": "~6.0"
     }
 }
