@@ -61,9 +61,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -79,9 +79,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -100,9 +100,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -117,9 +117,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -135,9 +135,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -152,9 +152,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return = array($header,$body);
             array_push($return_array, $return);
@@ -170,9 +170,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -184,9 +184,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -204,9 +204,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['body'] = http_build_query($data);
             $wp_remote_data['method'] = 'POST';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -225,9 +225,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -242,9 +242,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -260,9 +260,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -281,9 +281,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -298,9 +298,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -317,9 +317,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -396,9 +396,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['body'] = http_build_query(array());
             $wp_remote_data['method'] = 'POST';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return =array($header,$body);
             array_push($return_array, $return);
@@ -417,9 +417,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query(array());
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -438,9 +438,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -455,9 +455,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return = array($header,$body);
             array_push($return_array, $return);
@@ -473,9 +473,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -491,9 +491,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['body'] = http_build_query(array());
             $wp_remote_data['method'] = 'DELETE';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -510,9 +510,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query(array());
         $wp_remote_data['method'] = 'DELETE';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -527,9 +527,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return = array($header,$body);
             array_push($return_array, $return);
@@ -545,9 +545,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -562,9 +562,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return =array($header,$body);
             array_push($return_array, $return);
@@ -580,9 +580,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -594,9 +594,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -615,9 +615,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'PUT';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -636,9 +636,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -653,9 +653,9 @@ class WPConnect extends \Billplz\Connect
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
-            $response = wp_remote_post($url, $wp_remote_data);
+            $response = \wp_remote_post($url, $wp_remote_data);
             $header = $response['response']['code'];
-            $body = wp_remote_retrieve_body($response);
+            $body = \wp_remote_retrieve_body($response);
 
             $return= array($header,$body);
             array_push($return_array, $return);
@@ -671,9 +671,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -686,9 +686,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
@@ -700,9 +700,9 @@ class WPConnect extends \Billplz\Connect
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
-        $response = wp_remote_post($url, $wp_remote_data);
+        $response = \wp_remote_post($url, $wp_remote_data);
         $header = $response['response']['code'];
-        $body = wp_remote_retrieve_body($response);
+        $body = \wp_remote_retrieve_body($response);
 
         return array($header,$body);
     }
