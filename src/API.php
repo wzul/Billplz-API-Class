@@ -179,8 +179,8 @@ class API
         $collection = $this->toArray($this->getCollection($parameter['collection_id']));
 
         /* If doesn't exists or belong to another merchant */
-        if ($collection[0] === 404 || $collection[0] === 401) {
-
+        /* + In-case the collection id is an empty string */
+        if ($collection[0] === 404 || $collection[0] === 401 || empty($parameter['collection_id'])) {
             /* Get All Active & Inactive Collection List */
             $collectionIndexActive = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'active')));
             $collectionIndexInactive = $this->toArray($this->getCollectionIndex(array('page'=>'1', 'status'=>'inactive')));
