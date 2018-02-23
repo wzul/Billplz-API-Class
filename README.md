@@ -5,7 +5,7 @@
 [![License](https://poser.pugx.org/billplz/billplz-api/license)](https://packagist.org/packages/billplz/billplz-api)
 
 ## Minimum System Requirement
-- PHP 5.6 or newer
+- PHP 7.0 or newer
 
 ## Installation
 
