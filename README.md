@@ -1,8 +1,8 @@
 # Billplz API Class
-[![Latest Stable Version](https://poser.pugx.org/billplz/billplz-api)](https://packagist.org/packages/billplz/billplz-api)
+[![Latest Stable Version](https://poser.pugx.org/billplz/billplz-api/version)](https://packagist.org/packages/billplz/billplz-api)
 [![Total Downloads](https://poser.pugx.org/billplz/billplz-api/downloads)](https://packagist.org/packages/billplz/billplz-api)
 [![Latest Unstable Version](https://poser.pugx.org/billplz/billplz-api/v/unstable)](//packagist.org/packages/billplz/billplz-api)
-[![License](https://poser.pugx.org/billplz-api/api/license)](https://packagist.org/packages/billplz/billplz-api)
+[![License](https://poser.pugx.org/billplz/billplz-api/license)](https://packagist.org/packages/billplz/billplz-api)
 
 ## Minimum System Requirement
 - PHP 5.6 or newer
