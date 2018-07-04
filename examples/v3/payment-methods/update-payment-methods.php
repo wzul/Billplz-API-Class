@@ -11,9 +11,9 @@ $connnect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
 $parameter = array(
     'collection_id' => 'bbrgyvvo',
     'payment_methods' => array(
-        ['code' => 'fpx'],
-        ['code' => 'billplz'],
-        ['code' => 'boost'],
+        ['payment_methods[][code]' => 'fpx'],
+        ['payment_methods[][code]' => 'billplz'],
+        ['payment_methods[][code]' => 'boost'],
     )
 );
 
