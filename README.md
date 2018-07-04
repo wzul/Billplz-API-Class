@@ -45,4 +45,4 @@ $connect->setMode(true);
 
 ## Other
 
-Please open an issue or email to wan@billplz.com
+Please open an issue or email to Facebook: [Billplz Dev Jam](https://www.facebook.com/groups/billplzdevjam/)
