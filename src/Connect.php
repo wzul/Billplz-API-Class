@@ -688,9 +688,11 @@ class Connect
         $header = $this->header;
 
         if ($this->process instanceof \GuzzleHttp\Client) {
-            for ($i=0; $i<sizeof($data['payment_methods']); $i++) {
-                $header['body'] = 'payment_methods[][code]='.$data['payment_methods'][$i]['code'];
+            $body = [];
+            foreach ($data['payment_methods'] as $param) {
+                $body[] = http_build_query($param);
             }
+            $header['query'] = implode('&', $body);
 
             $return = $this->guzzleProccessRequest('PUT', $url, $header);
         } else {
