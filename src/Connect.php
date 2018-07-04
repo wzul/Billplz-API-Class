@@ -393,7 +393,7 @@ class Connect
                'state' => isset($_POST['state']) ? $_POST['state'] : '',
                'url' => isset($_POST['url']) ? $_POST['url'] : '',
                'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] :'',
-           );
+            );
             $type = 'callback';
         } else {
             return false;
@@ -685,10 +685,14 @@ class Connect
 
         unset($parameter['collection_id']);
         $data = $parameter;
+        $header = $this->header;
 
         if ($this->process instanceof \GuzzleHttp\Client) {
-            $header = $this->header;
-            $header['form_params'] = $data;
+            for ($i=0; $i<sizeof($data['payment_methods']); $i++) {
+                $header['body'] = 'payment_methods[][code]='.$data['payment_methods'][$i]['code'];
+            }
+            unset($header['verify']);
+
             $return = $this->guzzleProccessRequest('PUT', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
