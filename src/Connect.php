@@ -691,7 +691,6 @@ class Connect
             for ($i=0; $i<sizeof($data['payment_methods']); $i++) {
                 $header['body'] = 'payment_methods[][code]='.$data['payment_methods'][$i]['code'];
             }
-            unset($header['verify']);
 
             $return = $this->guzzleProccessRequest('PUT', $url, $header);
         } else {
