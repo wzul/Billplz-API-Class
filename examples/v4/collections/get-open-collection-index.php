@@ -10,6 +10,6 @@ $connnect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
 
 $billplz = new API($connnect);
 $response = $billplz->getOpenCollectionIndex();
-//$response = $billplz->getCollectionIndex(array('page'=>'1', 'status'=>'active'));
+//$response = $billplz->getOpenCollectionIndex(array('page'=>'1', 'status'=>'active'));
 
 echo '<pre>'.print_r($response, true).'</pre>';
