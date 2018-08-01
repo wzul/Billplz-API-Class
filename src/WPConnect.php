@@ -11,6 +11,7 @@ class WPConnect extends \Billplz\Connect
     private $process; //cURL or GuzzleHttp
     public $is_staging;
     public $url;
+    public $webhook_rank;
 
     public $header;
 
@@ -60,6 +61,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/webhook_rank';
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
         $response = \wp_remote_post($url, $wp_remote_data);
@@ -73,6 +75,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/collections?'.http_build_query($parameter);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -90,6 +93,7 @@ class WPConnect extends \Billplz\Connect
         $title = ['title' => $title];
         $data = array_merge($title, $optional);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -111,6 +115,7 @@ class WPConnect extends \Billplz\Connect
 
         $data = array_merge($parameter, $optional);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -129,6 +134,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v4/collections/' . $id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -147,6 +153,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/collections/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -164,6 +171,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v4/open_collections/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -182,6 +190,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/open_collections/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -196,6 +205,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/open_collections?'.http_build_query($parameter);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -215,6 +225,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $title) {
             $data = ['title' => $title];
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['body'] = http_build_query($data);
             $wp_remote_data['method'] = 'POST';
@@ -236,6 +247,7 @@ class WPConnect extends \Billplz\Connect
 
         $data = ['title' => $title];
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -254,6 +266,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v4/mass_payment_instruction_collections/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -272,6 +285,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/mass_payment_instruction_collections/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -292,6 +306,7 @@ class WPConnect extends \Billplz\Connect
 
         $data = array_merge($parameter, $optional);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -310,6 +325,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v4/mass_payment_instructions/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -328,6 +344,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v4/mass_payment_instructions/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -407,6 +424,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $title) {
             $url = $this->url . 'v3/collections/'.$title.'/'.$option;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['body'] = http_build_query(array());
             $wp_remote_data['method'] = 'POST';
@@ -428,6 +446,7 @@ class WPConnect extends \Billplz\Connect
 
         $data = ['title' => $title];
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query(array());
         $wp_remote_data['method'] = 'POST';
@@ -449,6 +468,7 @@ class WPConnect extends \Billplz\Connect
 
         $data = array_merge($parameter, $optional);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -467,6 +487,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v3/bills/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -485,6 +506,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/bills/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -502,6 +524,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v3/bills/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['body'] = http_build_query(array());
             $wp_remote_data['method'] = 'DELETE';
@@ -521,6 +544,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/bills/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query(array());
         $wp_remote_data['method'] = 'DELETE';
@@ -539,6 +563,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v3/check/bank_account_number/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -557,6 +582,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/check/bank_account_number/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -574,6 +600,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v3/collections/'.$id.'/payment_methods';
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -592,6 +619,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/collections/'.$id.'/payment_methods';
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -606,6 +634,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/bills/'.$id.'/transactions?'.http_build_query($parameter);
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -626,6 +655,7 @@ class WPConnect extends \Billplz\Connect
         unset($parameter['collection_id']);
         $data = $parameter;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'PUT';
@@ -648,6 +678,7 @@ class WPConnect extends \Billplz\Connect
 
         $url = $this->url . 'v3/bank_verification_services?'.$parameter;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -665,6 +696,7 @@ class WPConnect extends \Billplz\Connect
         foreach ($parameter as $id) {
             $url = $this->url . 'v3/bank_verification_services/'.$id;
 
+            $wp_remote_data['sslverify'] = false;
             $wp_remote_data['headers'] = $this->header;
             $wp_remote_data['method'] = 'GET';
 
@@ -683,6 +715,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/bank_verification_services/'.$id;
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
@@ -697,6 +730,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/bank_verification_services';
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['body'] = http_build_query($data);
         $wp_remote_data['method'] = 'POST';
@@ -712,6 +746,7 @@ class WPConnect extends \Billplz\Connect
     {
         $url = $this->url . 'v3/fpx_banks';
 
+        $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
         $wp_remote_data['method'] = 'GET';
 
