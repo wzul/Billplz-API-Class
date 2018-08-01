@@ -11,6 +11,7 @@ class Connect
     private $process; //cURL or GuzzleHttp
     public $is_staging;
     public $url;
+    public $webhook_rank;
 
     public $header;
 
@@ -52,18 +53,36 @@ class Connect
     public function detectMode()
     {
         $this->url = self::PRODUCTION_URL;
-        $collection = $this->toArray($this->getCollectionIndex());
-        if ($collection[0] === 200) {
+        $webhook_rank = $this->toArray($this->getWebhookRank());
+        if ($webhook_rank[0] === 200) {
             $this->is_staging = false;
+            $this->webhook_rank = $webhook_rank[1]['rank'];
             return $this;
         }
         $this->url = self::STAGING_URL;
-        $collection = $this->toArray($this->getCollectionIndex());
-        if ($collection[0] === 200) {
+        $webhook_rank = $this->toArray($this->getWebhookRank());
+        if ($webhook_rank[0] === 200) {
             $this->is_staging = true;
+            $this->webhook_rank = $webhook_rank[1]['rank'];
             return $this;
         }
         throw new \Exception('The API Key is not valid. Check your API Key');
+    }
+
+    public function getWebhookRank()
+    {
+        $url = $this->url . 'v4/webhook_rank';
+
+        if ($this->process instanceof \GuzzleHttp\Client) {
+            $return = $this->guzzleProccessRequest('GET', $url, $this->header);
+        } else {
+            curl_setopt($this->process, CURLOPT_URL, $url);
+            curl_setopt($this->process, CURLOPT_POST, 0);
+            $body = curl_exec($this->process);
+            $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
+            $return = array($header,$body);
+        }
+        return $return;
     }
 
     public function getCollectionIndex(array $parameter = array())

@@ -40,18 +40,33 @@ class WPConnect extends \Billplz\Connect
     public function detectMode()
     {
         $this->url = self::PRODUCTION_URL;
-        $collection = $this->toArray($this->getCollectionIndex());
+        $collection = $this->toArray($this->getWebhookRank());
         if ($collection[0] === 200) {
             $this->is_staging = false;
+            $this->webhook_rank = $webhook_rank[1]['rank'];
             return $this;
         }
         $this->url = self::STAGING_URL;
-        $collection = $this->toArray($this->getCollectionIndex());
+        $collection = $this->toArray($this->getWebhookRank());
         if ($collection[0] === 200) {
             $this->is_staging = true;
+            $this->webhook_rank = $webhook_rank[1]['rank'];
             return $this;
         }
         throw new \Exception('The API Key is not valid. Check your API Key');
+    }
+
+    public function getWebhookRank()
+    {
+        $url = $this->url . 'v4/webhook_rank';
+
+        $wp_remote_data['headers'] = $this->header;
+        $wp_remote_data['method'] = 'GET';
+        $response = \wp_remote_post($url, $wp_remote_data);
+        $header = $response['response']['code'];
+        $body = \wp_remote_retrieve_body($response);
+
+        return array($header,$body);
     }
 
     public function getCollectionIndex(array $parameter = array())
@@ -351,7 +366,7 @@ class WPConnect extends \Billplz\Connect
                'state' => isset($_POST['state']) ? $_POST['state'] : '',
                'url' => isset($_POST['url']) ? $_POST['url'] : '',
                'x_signature' => isset($_POST['x_signature']) ? $_POST['x_signature'] :'',
-           );
+            );
             $type = 'callback';
         } else {
             return false;
