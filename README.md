@@ -12,7 +12,7 @@
 To install through composer, simply execute:
 
 ```bash
-composer require billplz/billplz-api guzzlehttp/guzzle
+composer require billplz/billplz-api
 ```
 
 or
@@ -20,8 +20,7 @@ or
 ```json
 {
     "require": {
-        "billplz/billplz-api": "^3.7",
-        "guzzlehttp/guzzle": "~6.0"
+        "billplz/billplz-api": "^3.7"
     }
 }
 ```
