@@ -35,6 +35,8 @@ class Connect
             $this->header = $api_key . ':';
             curl_setopt($this->process, CURLOPT_HEADER, 0);
             curl_setopt($this->process, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($this->process, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($this->process, CURLOPT_SSL_VERIFYPEER, 0);
             curl_setopt($this->process, CURLOPT_TIMEOUT, self::TIMEOUT);
             curl_setopt($this->process, CURLOPT_USERPWD, $this->header);
         }
