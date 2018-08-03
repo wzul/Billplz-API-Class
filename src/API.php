@@ -154,7 +154,6 @@ class API
 
         /* Validate Mobile Number first */
         if (!empty($parameter['mobile'])) {
-
             /* Strip all unwanted character */
             $parameter['mobile'] = preg_replace('/[^0-9]/', '', $parameter['mobile']);
 
@@ -175,6 +174,12 @@ class API
             return $bill;
         }
 
+        if ($bill[0] === 401 && $this->connect->detect_mode) {
+            $this->connect->detect_mode = false;
+            $this->connect->url = $this->connect::STAGING_URL;
+            return $this->createBill($parameter, $optional, $sendCopy);
+        }
+
         /* Check if Failed caused by wrong Collection ID */
         $collection = $this->toArray($this->getCollection($parameter['collection_id']));
 
@@ -187,7 +192,6 @@ class API
 
             /* If Active Collection not available but Inactive Collection is available */
             if (empty($collectionIndexActive[1]['collections']) && !empty($collectionIndexInactive[1]['collections'])) {
-
                 /* Use inactive collection */
                 $parameter['collection_id'] = $collectionIndexInactive[1]['collections'][0]['id'];
             }

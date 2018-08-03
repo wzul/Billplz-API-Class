@@ -10,6 +10,7 @@ class WPConnect extends \Billplz\Connect
 
     private $process; //cURL or GuzzleHttp
     public $is_staging;
+    public $detect_mode;
     public $url;
     public $webhook_rank;
 
@@ -41,20 +42,8 @@ class WPConnect extends \Billplz\Connect
     public function detectMode()
     {
         $this->url = self::PRODUCTION_URL;
-        $collection = $this->toArray($this->getWebhookRank());
-        if ($collection[0] === 200) {
-            $this->is_staging = false;
-            $this->webhook_rank = $webhook_rank[1]['rank'];
-            return $this;
-        }
-        $this->url = self::STAGING_URL;
-        $collection = $this->toArray($this->getWebhookRank());
-        if ($collection[0] === 200) {
-            $this->is_staging = true;
-            $this->webhook_rank = $webhook_rank[1]['rank'];
-            return $this;
-        }
-        throw new \Exception('The API Key is not valid. Check your API Key');
+        $this->detect_mode = true;
+        return $this;
     }
 
     public function getWebhookRank()

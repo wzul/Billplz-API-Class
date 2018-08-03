@@ -10,6 +10,7 @@ class Connect
 
     private $process; //cURL or GuzzleHttp
     public $is_staging;
+    public $detect_mode = false;
     public $url;
     public $webhook_rank;
 
@@ -55,20 +56,8 @@ class Connect
     public function detectMode()
     {
         $this->url = self::PRODUCTION_URL;
-        $webhook_rank = $this->toArray($this->getWebhookRank());
-        if ($webhook_rank[0] === 200) {
-            $this->is_staging = false;
-            $this->webhook_rank = $webhook_rank[1]['rank'];
-            return $this;
-        }
-        $this->url = self::STAGING_URL;
-        $webhook_rank = $this->toArray($this->getWebhookRank());
-        if ($webhook_rank[0] === 200) {
-            $this->is_staging = true;
-            $this->webhook_rank = $webhook_rank[1]['rank'];
-            return $this;
-        }
-        throw new \Exception('The API Key is not valid. Check your API Key');
+        $this->detect_mode = true;
+        return $this;
     }
 
     public function getWebhookRank()
