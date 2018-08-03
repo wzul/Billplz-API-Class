@@ -417,11 +417,14 @@ class WPConnect
         $url = $this->url . 'v3/collections/'.$parameter['collection_id'].'/payment_methods';
 
         unset($parameter['collection_id']);
-        $data = $parameter;
+        $body = [];
+        foreach ($parameter['payment_methods'] as $param) {
+            $body[] = http_build_query($param);
+        }
 
         $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
-        $wp_remote_data['body'] = http_build_query($data);
+        $wp_remote_data['body'] = implode('&', $body);
         $wp_remote_data['method'] = 'PUT';
 
         $response = \wp_remote_post($url, $wp_remote_data);
