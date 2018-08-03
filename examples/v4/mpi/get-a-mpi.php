@@ -10,6 +10,5 @@ $connnect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
 
 $billplz = new API($connnect);
 $response = $billplz->getMPI('n139qbmz');
-//$response = $billplz->getMPI(array('u0czqeu7','n139qbmz'));
 
 echo '<pre>'.print_r($response, true).'</pre>';

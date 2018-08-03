@@ -139,27 +139,6 @@ class Connect
         return $return;
     }
 
-    public function getCollectionArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v4/collections/' . $id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
     public function getCollection(string $id)
     {
         $url = $this->url . 'v4/collections/'.$id;
@@ -175,27 +154,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function getOpenCollectionArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v4/open_collections/'.$id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function getOpenCollection(string $id)
@@ -230,32 +188,6 @@ class Connect
         return $return;
     }
 
-    public function createMPICollectionArray(array $parameter)
-    {
-        $url = $this->url . 'v4/mass_payment_instruction_collections';
-
-        $return_array = array();
-
-        foreach ($parameter as $title) {
-            $data = ['title' => $title];
-
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $header = $this->header;
-                $header['form_params'] = $data;
-                $return = $this->guzzleProccessRequest('POST', $url, $header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
     public function createMPICollection(string $title)
     {
         $url = $this->url . 'v4/mass_payment_instruction_collections';
@@ -275,27 +207,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function getMPICollectionArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v4/mass_payment_instruction_collections/'.$id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function getMPICollection(string $id)
@@ -337,27 +248,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function getMPIArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v4/mass_payment_instructions/'.$id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function getMPI(string $id)
@@ -437,31 +327,6 @@ class Connect
         throw new \Exception('X Signature Calculation Mismatch!');
     }
 
-    public function deactivateColletionArray(array $parameter, string $option = 'deactivate')
-    {
-        $return_array = array();
-
-        foreach ($parameter as $title) {
-            $url = $this->url . 'v3/collections/'.$title.'/'.$option;
-
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $header = $this->header;
-                $header['form_params'] = array();
-                $return = $this->guzzleProccessRequest('POST', $url, $header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 1);
-                curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query(array()));
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
     public function deactivateCollection(string $title, string $option = 'deactivate')
     {
         $url = $this->url . 'v3/collections/'.$title.'/'.$option;
@@ -509,30 +374,6 @@ class Connect
         return $return;
     }
 
-    public function getBillArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v3/bills/'.$id;
-
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $header = $this->header;
-                $header['form_params'] = array();
-                $return = $this->guzzleProccessRequest('GET', $url, $header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
     public function getBill(string $id)
     {
         $url = $this->url . 'v3/bills/'.$id;
@@ -550,30 +391,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function deleteBillArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v3/bills/'.$id;
-
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $header = $this->header;
-                $header['form_params'] = array();
-                $return = $this->guzzleProccessRequest('DELETE', $url, $header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_CUSTOMREQUEST, "DELETE");
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function deleteBill(string $id)
@@ -595,27 +412,6 @@ class Connect
         return $return;
     }
 
-    public function bankAccountCheckArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v3/check/bank_account_number/'.$id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
-    }
-
     public function bankAccountCheck(string $id)
     {
         $url = $this->url . 'v3/check/bank_account_number/'.$id;
@@ -630,27 +426,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function getPaymentMethodIndexArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v3/collections/'.$id.'/payment_methods';
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function getPaymentMethodIndex(string $id)
@@ -739,27 +514,6 @@ class Connect
         }
 
         return $return;
-    }
-
-    public function getBankAccountArray(array $parameter)
-    {
-        $return_array = array();
-
-        foreach ($parameter as $id) {
-            $url = $this->url . 'v3/bank_verification_services/'.$id;
-            if ($this->process instanceof \GuzzleHttp\Client) {
-                $return = $this->guzzleProccessRequest('GET', $url, $this->header);
-            } else {
-                curl_setopt($this->process, CURLOPT_URL, $url);
-                curl_setopt($this->process, CURLOPT_POST, 0);
-                $body = curl_exec($this->process);
-                $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
-                $return = array($header,$body);
-            }
-            array_push($return_array, $return);
-        }
-
-        return $return_array;
     }
 
     public function getBankAccount(string $id)
