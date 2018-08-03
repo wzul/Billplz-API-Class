@@ -16,37 +16,53 @@ class API
         $this->connect = $connect;
     }
 
-    public function getCollectionIndex(array $parameter = array())
+    /**
+     * This method is to change the URL to staging if failed to authenticate with production.
+     * It will recall the method that has executed previously to perform it in staging.
+     */
+    private function detectMode($method_name, $response, $parameter = '', $optional = '', $extra = '')
     {
-        $collection_index = $this->connect->getCollectionIndex($parameter);
-        if ($collection_index[0] === 401 && $this->connect->detect_mode) {
+        if ($response[0] === 401 && $this->connect->detect_mode) {
             $this->connect->detect_mode = false;
             $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getCollectionIndex($parameter);
+            if (!empty($extra)) {
+                return $this->{$method_name}($parameter, $optional, $extra);
+            } elseif (!empty($optional)) {
+                return $this->{$method_name}($parameter, $optional);
+            } elseif (!empty($parameter)) {
+                return $this->{$method_name}($parameter);
+            } else {
+                return $this->{$method_name}();
+            }
         }
-        return $collection_index;
+        return false;
+    }
+
+    public function getCollectionIndex(array $parameter = array())
+    {
+        $response = $this->connect->getCollectionIndex($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
+        }
+        return $response;
     }
 
     public function createCollection(string $parameter, array $optional = array())
     {
-        $create_collection = $this->connect->createCollection($parameter, $optional);
-        if ($create_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createCollection($parameter, $optional);
+        $response = $this->connect->createCollection($parameter, $optional);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter, $optional)) {
+            return $detect_mode;
         }
-        return $create_collection;
+        return $response;
     }
 
     public function getCollection(string $parameter)
     {
-        $get_collection = $this->connect->getCollection($parameter);
-        if ($get_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getCollection($parameter);
+        $response = $this->connect->getCollection($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_collection;
+        return $response;
     }
 
     public function createOpenCollection(array $parameter, array $optional = array())
@@ -58,101 +74,83 @@ class API
             throw new \Exception("Amount Invalid. Too big");
         }
 
-        $create_open_collection = $this->connect->createOpenCollection($parameter, $optional);
-        if ($create_open_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createOpenCollection($parameter, $optional);
+        $response = $this->connect->createOpenCollection($parameter, $optional);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter, $optional)) {
+            return $detect_mode;
         }
-        return $create_open_collection;
+        return $response;
     }
 
     public function getOpenCollection(string $parameter)
     {
-        $get_open_collection = $this->connect->getOpenCollection($parameter);
-        if ($get_open_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getOpenCollection($parameter);
+        $response = $this->connect->getOpenCollection($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_open_collection;
+        return $response;
     }
 
     public function getOpenCollectionIndex(array $parameter = array())
     {
-        $get_open_collection_index = $this->connect->getOpenCollectionIndex($parameter);
-        if ($get_open_collection_index[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getOpenCollectionIndex($parameter);
+        $response = $this->connect->getOpenCollectionIndex($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_open_collection_index;
+        return $response;
     }
 
     public function createMPICollection(string $parameter)
     {
-        $create_mpi_collection = $this->connect->createMPICollection($parameter);
-        if ($create_mpi_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createMPICollection($parameter);
+        $response = $this->connect->createMPICollection($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $create_mpi_collection;
+        return $response;
     }
 
     public function getMPICollection(string $parameter)
     {
-        $get_mpi_collection = $this->connect->getMPICollection($parameter);
-        if ($get_mpi_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getMPICollection($parameter);
+        $response = $this->connect->getMPICollection($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_mpi_collection;
+        return $response;
     }
 
     public function createMPI(array $parameter, array $optional = array())
     {
-        $create_mpi = $this->connect->createMPI($parameter, $optional);
-        if ($create_mpi[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createMPI($parameter, $optional);
+        $response = $this->connect->createMPI($parameter, $optional);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter, $optional)) {
+            return $detect_mode;
         }
-        return $create_mpi;
+        return $response;
     }
 
     public function getMPI(string $parameter)
     {
-        $get_mpi = $this->connect->getMPI($parameter);
-        if ($get_mpi[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getMPI($parameter);
+        $response = $this->connect->getMPI($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_mpi;
+        return $response;
     }
 
     public function deactivateCollection(string $parameter)
     {
-        $deactivate_collection = $this->connect->deactivateCollection($parameter);
-        if ($deactivate_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->deactivateCollection($parameter);
+        $response = $this->connect->deactivateCollection($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $deactivate_collection;
+        return $response;
     }
 
     public function activateCollection(string $parameter)
     {
-        $activate_collection = $this->connect->deactivateCollection($parameter, 'activate');
-        if ($activate_collection[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->activateCollection($parameter);
+        $response = $this->connect->deactivateCollection($parameter, 'activate');
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $activate_collection;
+        return $response;
     }
 
     public function createBill(array $parameter, array $optional = array(), string $sendCopy = '')
@@ -197,10 +195,9 @@ class API
             return $bill;
         }
 
-        if ($bill[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createBill($parameter, $optional, $sendCopy);
+        /* Determine if the API Key is belong to Staging */
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $bill, $parameter, $optional, $sendCopy)) {
+            return $detect_mode;
         }
 
         /* Check if Failed caused by wrong Collection ID */
@@ -239,101 +236,83 @@ class API
 
     public function deleteBill(string $parameter)
     {
-        $delete_bill = $this->connect->deleteBill($parameter);
-        if ($delete_bill[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->deleteBill($parameter);
+        $response = $this->connect->deleteBill($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $delete_bill;
+        return $response;
     }
 
     public function getBill(string $parameter)
     {
-        $get_bill = $this->connect->getBill($parameter);
-        if ($get_bill[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getBill($parameter);
+        $response = $this->connect->getBill($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_bill;
+        return $response;
     }
 
     public function bankAccountCheck(string $parameter)
     {
-        $bank_account_check = $this->connect->bankAccountCheck($parameter);
-        if ($bank_account_check[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->bankAccountCheck($parameter);
+        $response = $this->connect->bankAccountCheck($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $bank_account_check;
+        return $response;
     }
 
     public function getTransactionIndex(string $id, array $parameter = array('page'=>'1'))
     {
-        $get_transaction_index = $this->connect->getTransactionIndex($id, $parameter);
-        if ($get_transaction_index[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getTransactionIndex($parameter);
+        $response = $this->connect->getTransactionIndex($id, $parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $id, $parameter)) {
+            return $detect_mode;
         }
-        return $get_transaction_index;
+        return $response;
     }
 
     public function getPaymentMethodIndex(string $parameter)
     {
-        $get_payment_method_index = $this->connect->getPaymentMethodIndex($parameter);
-        if ($get_payment_method_index[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getPaymentMethodIndex($parameter);
+        $response = $this->connect->getPaymentMethodIndex($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_payment_method_index;
+        return $response;
     }
 
     public function updatePaymentMethod(array $parameter)
     {
-        $update_payment_method = $this->connect->updatePaymentMethod($parameter);
-        if ($update_payment_method[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->updatePaymentMethod($parameter);
+        $response = $this->connect->updatePaymentMethod($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $update_payment_method;
+        return $response;
     }
 
     public function getBankAccountIndex(array $parameter = array('account_numbers'=>['0','1']))
     {
-        $get_bank_account_index = $this->connect->getBankAccountIndex($parameter);
-        if ($get_bank_account_index[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getBankAccountIndex($parameter);
+        $response = $this->connect->getBankAccountIndex($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_bank_account_index;
+        return $response;
     }
 
     public function getBankAccount(string $parameter)
     {
-        $get_bank_account = $this->connect->getBankAccount($parameter);
-        if ($get_bank_account[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getBankAccount($parameter);
+        $response = $this->connect->getBankAccount($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $get_bank_account;
+        return $response;
     }
 
     public function createBankAccount(array $parameter)
     {
-        $create_bank_account = $this->connect->createBankAccount($parameter);
-        if ($create_bank_account[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->createBankAccount($parameter);
+        $response = $this->connect->createBankAccount($parameter);
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response, $parameter)) {
+            return $detect_mode;
         }
-        return $create_bank_account;
+        return $response;
     }
 
     public function bypassBillplzPage(string $bill)
@@ -368,13 +347,11 @@ class API
 
     public function getFpxBanks()
     {
-        $get_fpx_banks = $this->connect->getFpxBanks();
-        if ($get_fpx_banks[0] === 401 && $this->connect->detect_mode) {
-            $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
-            return $this->getFpxBanks();
+        $response = $this->connect->getFpxBanks();
+        if ($detect_mode = $this->detectMode(__FUNCTION__, $response)) {
+            return $detect_mode;
         }
-        return $get_fpx_banks;
+        return $response;
     }
 
     public function toArray(array $json)
