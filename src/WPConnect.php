@@ -2,7 +2,7 @@
 
 namespace Billplz;
 
-class WPConnect extends \Billplz\Connect
+class WPConnect
 {
     private $api_key;
     private $x_signature_key;
