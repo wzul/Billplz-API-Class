@@ -472,18 +472,19 @@ class Connect
         $data = $parameter;
         $header = $this->header;
 
+        $body = [];
+        foreach ($data['payment_methods'] as $param) {
+            $body[] = http_build_query($param);
+        }
+
         if ($this->process instanceof \GuzzleHttp\Client) {
-            $body = [];
-            foreach ($data['payment_methods'] as $param) {
-                $body[] = http_build_query($param);
-            }
             $header['query'] = implode('&', $body);
 
             $return = $this->guzzleProccessRequest('PUT', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
             curl_setopt($this->process, CURLOPT_CUSTOMREQUEST, 'PUT');
-            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->process, CURLOPT_POSTFIELDS, implode('&', $body));
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);
