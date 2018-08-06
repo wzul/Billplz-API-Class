@@ -96,16 +96,33 @@ class Connect
     {
         $url = $this->url . 'v4/collections';
 
-        $title = ['title' => $title];
-        $data = array_merge($title, $optional);
+        $body = http_build_query(['title' => $title]);
+        if (isset($optional['split_header'])) {
+            $split_header = http_build_query(array('split_header' => $optional['split_header']));
+        }
+
+        $split_payments = [];
+        if (isset($optional['split_payments'])) {
+            foreach ($optional['split_payments'] as $param) {
+                $split_payments[] = http_build_query($param);
+            }
+        }
+
+        if (!empty($split_payments)) {
+            $body.= '&' . implode('&', $split_payments);
+
+            if (!empty($split_header)) {
+                $body.= '&' . $split_header;
+            }
+        }
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $header = $this->header;
-            $header['form_params'] = $data;
+            $header['query'] = $body;
             $return = $this->guzzleProccessRequest('POST', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
-            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->process, CURLOPT_POSTFIELDS, $body);
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);
@@ -118,19 +135,38 @@ class Connect
     {
         $url = $this->url . 'v4/open_collections';
 
-        //if (sizeof($parameter) !== sizeof($optional) && !empty($optional)){
-        //    throw new \Exception('Optional parameter size is not match with Required parameter');
-        //}
+        $body = http_build_query($parameter);
+        if (isset($optional['split_header'])) {
+            $split_header = http_build_query(array('split_header' => $optional['split_header']));
+        }
 
-        $data = array_merge($parameter, $optional);
+        $split_payments = [];
+        if (isset($optional['split_payments'])) {
+            foreach ($optional['split_payments'] as $param) {
+                $split_payments[] = http_build_query($param);
+            }
+        }
+
+        if (!empty($split_payments)) {
+            unset($optional['split_payments']);
+            $body.= '&' . implode('&', $split_payments);
+            if (!empty($split_header)) {
+                unset($optional['split_header']);
+                $body.= '&' . $split_header;
+            }
+        }
+
+        if (!empty($optional)) {
+            $body.= '&' . http_build_query($optional);
+        }
 
         if ($this->process instanceof \GuzzleHttp\Client) {
             $header = $this->header;
-            $header['form_params'] = $data;
+            $header['query'] = $body;
             $return = $this->guzzleProccessRequest('POST', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
-            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($this->process, CURLOPT_POSTFIELDS, $body);
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);

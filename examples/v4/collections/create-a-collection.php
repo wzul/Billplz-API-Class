@@ -16,14 +16,18 @@ $collectionName = 'My First Collection';
 
 $optional  = array(
     /* Does not supported to post logo */
-    'split_header' => '',
-    /* This code does not support setting up 2 split payments receiver due to same array key value issues */
-    'split_payments[]' => array(
-            'email' => 'wan@billplz.com',
-            'fixed_cut' => '100',
-            'variable_cut' => '',
-            'stack_order' => '0'
-    )
+    'split_header' => true,
+    'split_payments' => array(
+            ['split_payments[][email]' => 'wan@billplz.com'],
+            ['split_payments[][fixed_cut]' => '100'],
+            ['split_payments[][variable_cut]' => ''],
+            ['split_payments[][stack_order]' => '0'],
+            ['split_payments[][email]' => 'wan+1@billplz.com'],
+            ['split_payments[][fixed_cut]' => '100'],
+            ['split_payments[][variable_cut]' => ''],
+            ['split_payments[][stack_order]' => '1'],
+    ),
+    
 );
 $response = $billplz->createCollection($collectionName);
 //$response = $billplz->createCollection($collectionName, $optional);

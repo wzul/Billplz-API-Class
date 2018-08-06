@@ -23,12 +23,16 @@ $optional = array(
     'email_link' => 'http://google.com',
     'tax' => '0',
     'photo' => '',
-    'split_header' => 'false',
-    'split_payments[]' => array(
-        'email'=>'wan@billplz.com',
-        'fixed_cut'=> '100',
-        'variable_cut'=> '',
-        'stack_order' => '0'
+    'split_header' => true,
+    'split_payments' => array(
+        ['split_payments[][email]' => 'wan@billplz.com'],
+        ['split_payments[][fixed_cut]' => '100'],
+        ['split_payments[][variable_cut]' => ''],
+        ['split_payments[][stack_order]' => '0'],
+        ['split_payments[][email]' => 'wan+1@billplz.com'],
+        ['split_payments[][fixed_cut]' => '100'],
+        ['split_payments[][variable_cut]' => ''],
+        ['split_payments[][stack_order]' => '1'],
     )
 );
 

@@ -79,12 +79,28 @@ class WPConnect
     {
         $url = $this->url . 'v4/collections';
 
-        $title = ['title' => $title];
-        $data = array_merge($title, $optional);
+        $body = http_build_query(['title' => $title]);
+        if (isset($optional['split_header'])) {
+            $split_header = http_build_query(array('split_header' => $optional['split_header']));
+        }
+
+        $split_payments = [];
+        if (isset($optional['split_payments'])) {
+            foreach ($optional['split_payments'] as $param) {
+                $split_payments[] = http_build_query($param);
+            }
+        }
+
+        if (!empty($split_payments)) {
+            $body.= '&' . implode('&', $split_payments);
+            if (!empty($split_header)) {
+                $body.= '&' . $split_header;
+            }
+        }
 
         $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
-        $wp_remote_data['body'] = http_build_query($data);
+        $wp_remote_data['body'] = $body;
         $wp_remote_data['method'] = 'POST';
 
         $response = \wp_remote_post($url, $wp_remote_data);
@@ -98,15 +114,34 @@ class WPConnect
     {
         $url = $this->url . 'v4/open_collections';
 
-        //if (sizeof($parameter) !== sizeof($optional) && !empty($optional)){
-        //    throw new \Exception('Optional parameter size is not match with Required parameter');
-        //}
+        $body = http_build_query($parameter);
+        if (isset($optional['split_header'])) {
+            $split_header = http_build_query(array('split_header' => $optional['split_header']));
+        }
 
-        $data = array_merge($parameter, $optional);
+        $split_payments = [];
+        if (isset($optional['split_payments'])) {
+            foreach ($optional['split_payments'] as $param) {
+                $split_payments[] = http_build_query($param);
+            }
+        }
+
+        if (!empty($split_payments)) {
+            unset($optional['split_payments']);
+            $body.= '&' . implode('&', $split_payments);
+            if (!empty($split_header)) {
+                unset($optional['split_header']);
+                $body.= '&' . $split_header;
+            }
+        }
+
+        if (!empty($optional)) {
+            $body.= '&' . http_build_query($optional);
+        }
 
         $wp_remote_data['sslverify'] = false;
         $wp_remote_data['headers'] = $this->header;
-        $wp_remote_data['body'] = http_build_query($data);
+        $wp_remote_data['body'] = $body;
         $wp_remote_data['method'] = 'POST';
 
         $response = \wp_remote_post($url, $wp_remote_data);
