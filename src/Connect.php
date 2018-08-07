@@ -1,6 +1,6 @@
 <?php
 
-namespace Billplz;
+namespace Billplz\Hikashop;
 
 class Connect
 {
@@ -9,7 +9,7 @@ class Connect
     private $collection_id;
 
     private $process; //cURL or GuzzleHttp
-    public $is_staging;
+    public $is_production;
     public $detect_mode = false;
     public $url;
     public $webhook_rank;
@@ -43,10 +43,10 @@ class Connect
         }
     }
 
-    public function setMode(bool $is_staging = false)
+    public function setMode(bool $is_production = false)
     {
-        $this->is_staging = $is_staging;
-        if ($is_staging) {
+        $this->is_production = $is_production;
+        if ($is_production) {
             $this->url = self::PRODUCTION_URL;
         } else {
             $this->url = self::STAGING_URL;

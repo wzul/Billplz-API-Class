@@ -1,6 +1,6 @@
 <?php
 
-namespace Billplz;
+namespace Billplz\Hikashop;
 
 class API
 {
@@ -24,7 +24,7 @@ class API
     {
         if ($response[0] === 401 && $this->connect->detect_mode) {
             $this->connect->detect_mode = false;
-            $this->connect->url = $this->connect::STAGING_URL;
+            $this->connect->setMode(false);
             if (!empty($extra)) {
                 return $this->{$method_name}($parameter, $optional, $extra);
             } elseif (!empty($optional)) {
