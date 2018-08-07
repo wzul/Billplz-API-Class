@@ -9,8 +9,7 @@ use Billplz\Connect;
 $connect = (new Connect('3f12b915-8763-48d1-99bb-7ff0d771a06c'))->detectMode();
 //$connect->setMode(true); // true: staging | false: production (default)
 
-//$response = $connect->toArray($connect->getWebhookRank());
-//$webhook_rank = $response[1]['rank'];
-$webhook_rank = $connect->webhook_rank;
+$response = $connect->toArray($connect->getWebhookRank());
+$webhook_rank = $response[1]['rank'];
 
 echo '<pre>'.print_r($webhook_rank, true).'</pre>';
