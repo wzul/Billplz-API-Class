@@ -1,6 +1,6 @@
 <?php
 
-namespace Billplz\Hikashop;
+namespace Billplz;
 
 class Connect
 {
