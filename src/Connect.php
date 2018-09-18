@@ -579,7 +579,7 @@ class Connect
             $return = $this->guzzleProccessRequest('POST', $url, $header);
         } else {
             curl_setopt($this->process, CURLOPT_URL, $url);
-            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($paraparameter));
+            curl_setopt($this->process, CURLOPT_POSTFIELDS, http_build_query($parameter));
             $body = curl_exec($this->process);
             $header = curl_getinfo($this->process, CURLINFO_HTTP_CODE);
             $return = array($header,$body);
