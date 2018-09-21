@@ -35,10 +35,10 @@ By it's design, the Connect class are able to determine the API Key is belong to
 <?php
 
 use Billplz\Connect;
-$connnect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
+$connect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
 
 // Or manually set the mode
-$connnect = new Connect('4e49de80-1670-4606-84f8-2f1d33a38670');
+$connect = new Connect('4e49de80-1670-4606-84f8-2f1d33a38670');
 $connect->setMode(true);
 ```
 
