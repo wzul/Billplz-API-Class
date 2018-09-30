@@ -5,7 +5,7 @@ require 'vendor/autoload.php';
 use Billplz\API;
 use Billplz\Connect;
 
-$connect = (new Connect('4e49de80-1670-4606-84f8-2f1d33a38670'))->detectMode();
+$connect = (new Connect('<api-key-here>'))->detectMode();
 //$connect->setMode(true); // true: staging | false: production (default)
 
 $billplz = new API($connect);
@@ -18,8 +18,8 @@ foreach ($fpxBanks[1]['banks'] as $bank) {
 }
 
 $parameter = array(
-    'collection_id' => 'salahpulok',
-    'email'=>'wan@billplz.com',
+    'collection_id' => '<collection-id-here>',
+    'email'=>'youremail@gmail.com',
     'mobile'=>'0141234567',
     'name'=>'Lol',
     'amount'=>'200',
