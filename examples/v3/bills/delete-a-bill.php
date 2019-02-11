@@ -6,7 +6,7 @@ use Billplz\API;
 use Billplz\Connect;
 
 $connect = (new Connect('<api-key-here>'))->detectMode();
-//$connect->setMode(true); // true: staging | false: production (default)
+//$connect->setMode(true); // true: production | false: staging (default)
 
 $billplz = new API($connect);
 $response = $billplz->deleteBill('cjywga');

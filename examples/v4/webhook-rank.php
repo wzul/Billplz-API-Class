@@ -7,7 +7,7 @@ ini_set('display_errors', 'On');
 use Billplz\Connect;
 
 $connect = (new Connect('3f12b915-8763-48d1-99bb-7ff0d771a06c'))->detectMode();
-//$connect->setMode(true); // true: staging | false: production (default)
+//$connect->setMode(true); // true: production | false: staging (default)
 
 $response = $connect->toArray($connect->getWebhookRank());
 $webhook_rank = $response[1]['rank'];
